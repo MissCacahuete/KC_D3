@@ -1,7 +1,7 @@
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
 
-d3.json('https://gist.githubusercontent.com/miguepiscy/2d431ec3bc101ef62ff8ddd0e476177f/raw/d9f3a11cfa08154c36623c1bf01537bb7b022491/practica.json')
+d3.json('https://gist.githubusercontent.com/miguepiscy/2d431ec3bc101ef62ff8ddd0e476177f/raw/2482274db871e60195b7196c602700226bdd3a44/practica.json')
     .then((featureCollection) => {
         drawMap(featureCollection);
     })
