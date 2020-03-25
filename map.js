@@ -80,3 +80,85 @@ function drawMap(featureCollection) {
         return d3.interpolateRainbow(price / priceMax);
     }
 }
+
+//Usera eje Y Nº de apartamentos Eje X número de habitaciones
+
+const data = [
+    [0, 4],
+    [1, 30],
+    [2, 5],
+
+]
+const xmax = d3.max(data, d => d[0]);
+const xmin = d3.min(data, d => d[0]);
+
+const ymax = d3.max(data, d => d[1]);
+const ymin = d3.min(data, d => d[1]);
+
+const height = 600;
+const width = 600;
+const ratio = 100;
+const sizeAxis = 20;
+const scaleX = d3.scaleLinear()
+    .domain([xmin, xmax])
+    .range([ratio, width - ratio - sizeAxis]);
+
+const scaleY = d3.scaleLinear()
+    .domain([ymax, ymin])
+    .range([ratio, height - ratio - sizeAxis]);
+
+
+const svg = d3.select('#prueba')
+    .append('svg');
+
+svg.attr('width', width)
+    .attr('height', height);
+
+const group = svg.selectAll('g')
+    .data(data)
+    .enter()
+    .append('g')
+    .attr('class', (d) => {
+        const r = d[1] / 2;
+        d.push(r);
+        return 'point';
+    });
+
+group.attr('transform', (d) => {
+    const coordx = scaleX(d[0]);
+    const coordy = scaleY(d[1]);
+    return `translate(${coordx}, ${coordy})`;
+})
+
+const circle = group
+    .append('circle');
+
+circle
+    .attr('cx', d => 0)
+    .attr('cy', d => 0)
+    .attr('r', (d) => {
+           
+        return d[2];
+    })
+    .attr('class', (d) => {
+        if (d[2] > 5) {
+            return 'rectwarning';
+        }
+    })
+
+group.append('text')
+
+.text(' nº Apt/Hab.');
+
+const xAxis = d3.axisBottom(scaleX);
+
+svg.append('g')
+    .attr('class', 'axisX')
+    .attr('transform', `translate(0,${height - sizeAxis})`)
+    .call(xAxis);
+
+const yAxis = d3.axisRight(scaleY);
+svg.append('g')
+    .attr('class', 'axisY')
+    .attr('transform', 'translate(0, 0)')
+    .call(yAxis);
